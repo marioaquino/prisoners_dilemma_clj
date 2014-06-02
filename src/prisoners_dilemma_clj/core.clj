@@ -1,10 +1,14 @@
 (ns prisoners-dilemma-clj.core)
 
-(def tit-for-tat
-  ((fn tfti [_ prior]
+(defn starts-friendly [player]
+  ((fn starts-friendly-impl [my-last-move their-last-move]
      (fn
-       ([] prior)
-       ([my-last-move their-last-move] (tfti my-last-move their-last-move)))) true true))
+       ([] (player my-last-move their-last-move))
+       ([my-last their-last] (starts-friendly-impl my-last their-last)))) true true))
+
+(def tit-for-tat
+  (starts-friendly (fn [_ their-last-move]
+         their-last-move)))
 
 (defn always [val]
   (fn always-impl
@@ -21,10 +25,8 @@
 ;; Did I cooperate last time and did my opponent cooperate last time? I will this time.
 ;; Did I defect last time? If I did, then I will this time.
 (def grudger
-  ((fn grudge [my-last their-last]
-    (fn
-      ([] (and my-last their-last))
-      ([my-last-move their-last-move] (grudge my-last-move their-last-move)))) true true))
+  (starts-friendly (fn [my-last their-last]
+         (and my-last their-last))))
 
 (defn moves [p1 p2]
   (let [p1m (p1)
