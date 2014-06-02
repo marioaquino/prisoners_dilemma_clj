@@ -2,9 +2,10 @@
 
 (defn starts-friendly [player]
   ((fn starts-friendly-impl [my-last-move their-last-move]
-     (fn
-       ([] (player my-last-move their-last-move))
-       ([my-last their-last] (starts-friendly-impl my-last their-last)))) true true))
+     (let [my-current-move (memoize #(player my-last-move their-last-move))]
+       (fn
+         ([] (my-current-move))
+         ([their-last] (starts-friendly-impl (my-current-move) their-last))))) true true))
 
 (def tit-for-tat
   (starts-friendly (fn [_ their-last-move]
@@ -13,7 +14,7 @@
 (defn always [val]
   (fn always-impl
     ([] val)
-    ([_ _] always-impl)))
+    ([_] always-impl)))
 
 (def cooperate
   (always true))
@@ -31,6 +32,6 @@
 (defn moves [p1 p2]
   (let [p1m (p1)
         p2m (p2)]
-    (cons [p1m p2m] (lazy-seq (moves (p1 p1m p2m) (p2 p2m p1m))))))
+    (cons [p1m p2m] (lazy-seq (moves (p1 p2m) (p2 p1m))))))
 
 
