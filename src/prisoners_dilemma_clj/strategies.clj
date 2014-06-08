@@ -1,4 +1,4 @@
-(ns prisoners-dilemma-clj.core)
+(ns prisoners-dilemma-clj.strategies)
 
 (defn starts-friendly [player]
   ((fn starts-friendly-impl [my-last-move their-last-move]
@@ -28,6 +28,12 @@
 (def grudger
   (starts-friendly (fn [my-last their-last]
          (and my-last their-last))))
+
+(def strategies
+  [tit-for-tat
+   cooperate
+   defect
+   grudger])
 
 (defn moves [p1 p2]
   (let [p1m (p1)

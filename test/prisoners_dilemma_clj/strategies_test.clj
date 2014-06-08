@@ -1,6 +1,6 @@
-(ns prisoners-dilemma-clj.core-test
+(ns prisoners-dilemma-clj.strategies-test
   (:require [clojure.test :refer :all]
-            [prisoners-dilemma-clj.core :refer :all]))
+            [prisoners-dilemma-clj.strategies :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
