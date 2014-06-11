@@ -30,14 +30,22 @@
          (and my-last their-last))))
 
 (def strategies
-  [tit-for-tat
-   cooperate
-   defect
-   grudger])
+  [#'tit-for-tat
+   #'cooperate
+   #'defect
+   #'grudger])
 
 (defn moves [p1 p2]
   (let [p1m (p1)
         p2m (p2)]
     (cons [p1m p2m] (lazy-seq (moves (p1 p2m) (p2 p1m))))))
 
+(def my-grid (g/grid 10))
+(def scores (map (fn [{points :points strat :strategy}] {:name (:name (meta strat)) :points points}) (p/round my-grid)))
+(sort-by :points scores)
+=>  ({:name tit-for-tat, :points 3} {:name grudger, :points 3} {:name cooperate, :points 3} {:name tit-for-tat, :points 3} {:name cooperate, :points 6} {:name cooperate, :points 6} {:name cooperate, :points 6} {:name grudger, :points 6} {:name defect, :points 10} {:name defect, :points 10})
+
+
+(map 
+  (fn [{points :points strat :strategy} b] {:name (:name (meta strat)) :points points}) (p/round my-grid))
 
