@@ -43,7 +43,8 @@
             others (rest rest-of-list)]
         (pairinate leftmost e (cons [half-of-pair e] pairs-so-far) others))))
 
-(defn pair-ring [stuff] (reverse ( pairinate (first stuff) (first stuff) [] (rest stuff))))
+(defn pair-ring [stuff]
+  (reverse ( pairinate (first stuff) (first stuff) [] (rest stuff))))
 
 (defn unpairinate [leftmost half-of-pair output-so-far rest-of-list]
   (if (empty? rest-of-list)
