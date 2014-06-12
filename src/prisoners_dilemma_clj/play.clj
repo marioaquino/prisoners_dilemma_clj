@@ -1,7 +1,5 @@
 (ns prisoners-dilemma-clj.play
-  (:require [prisoners-dilemma-clj.grid :as g])
-  )
-
+  (:require [prisoners-dilemma-clj.grid :as g]))
 
 ;; this should be in a bird file but I don't know how
 ;; to import a neighbor file dammit
@@ -18,8 +16,9 @@
 (defn move-for [this-bird other-bird]
   (let [default-strategy (:strategy this-bird)
         this-strategy (or (get  (or (:strategies this-bird) {} ) (identifier other-bird)) default-strategy)]
-    (this-strategy) ;;my silly no-args-means-next-move design
-    ))
+    ;;my silly no-args-means-next-move design
+    (this-strategy)))
+
 (defn receive-points [this-bird points]
   (apply-to this-bird :points #(+ (or % 0) points)))
 
@@ -33,11 +32,8 @@
           ((or strat (:strategy this-bird)) move)))))))
 
 (defn log [this-bird message]
-  (apply-to this-bird :log #(cons message %))
-  )
+  (apply-to this-bird :log #(cons message %)))
 ;; end bird messages
-
-
 
 (defn pairinate
     [leftmost half-of-pair pairs-so-far rest-of-list]
@@ -102,3 +98,5 @@
         bird-ops (map #(apply comp %) pairs-of-ops)]
    (apply-sideways (fn [f a] (f a)) bird-ops grid)))
 
+(defn score-grid [grid]
+   (map (fn [{points :points strategy :strategy}] {:name (:name (meta strategy)) :points points}) grid))
