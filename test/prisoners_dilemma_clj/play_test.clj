@@ -17,8 +17,7 @@
              (pair-ring [:a]) => '([:a :a]))
        
        (fact "returns two pairs with the same things when given a vector of 2"
-             (pair-ring [:a :b]) => '([:a :b] [:b :a]))
+             (map set (pair-ring [:a :b])) => (contains '(#{:a :b} #{:b :a})))
        
        (fact "returns pairs of three different items"
-             (set (pair-ring [:a :b :c])) => #{[:a :b] [:b :c] [:c :a]}))
-
+             (map set (pair-ring [:a :b :c])) => (contains '(#{:a :b} #{:b :c} #{:c :a}) :in-any-order)))

@@ -35,16 +35,8 @@
   (apply-to this-bird :log #(cons message %)))
 ;; end bird messages
 
-(defn pairinate
-    [leftmost half-of-pair pairs-so-far rest-of-list]
-    (if (empty? rest-of-list)
-      (cons [half-of-pair leftmost] pairs-so-far)
-      (let [e (first rest-of-list)
-            others (rest rest-of-list)]
-        (pairinate leftmost e (cons [half-of-pair e] pairs-so-far) others))))
-
 (defn pair-ring [stuff]
-  (reverse ( pairinate (first stuff) (first stuff) [] (rest stuff))))
+  (conj (reverse (partition 2 1 stuff)) [(first stuff) (last stuff)]))
 
 (defn unpairinate [leftmost half-of-pair output-so-far rest-of-list]
   (if (empty? rest-of-list)
