@@ -8,3 +8,8 @@
             named-strategy (with-meta 'sucker-strategy {:name "sucker"})
             my-grid [{:points 10 :strategy named-strategy}]]
         (score-grid my-grid) => '({:name "sucker" :points 10})))
+
+(facts "pair-ring"
+       (fact "returns a pair of nils when given an empty sequence"
+             (pair-ring []) => '([nil nil])))
+
