@@ -36,7 +36,7 @@
 ;; end bird messages
 
 (defn pair-ring [stuff]
-  (conj (reverse (partition 2 1 stuff)) [(first stuff) (last stuff)]))
+  (conj (partition 2 1 stuff) [(last stuff) (first stuff)]))
 
 (defn unpairinate [leftmost half-of-pair output-so-far rest-of-list]
   (if (empty? rest-of-list)
@@ -92,4 +92,10 @@
    (apply-sideways (fn [f a] (f a)) bird-ops grid)))
 
 (defn score-grid [grid]
-   (map (fn [{points :points strategy :strategy}] {:name (:name (meta strategy)) :points points}) grid))
+  (let [name-builder (fn [{:keys [strategy name]}]
+                       (apply str (flatten (list (:name (meta strategy))
+                                                 (if name
+                                                   [" (" name ")"]
+                                                   "")))))]
+    (map (fn [{points :points :as bird}]
+           {:name (name-builder bird) :points points}) grid)))
